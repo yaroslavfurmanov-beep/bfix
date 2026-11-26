@@ -146,6 +146,12 @@ const total = String(compareSlides.length).padStart(2, '0');
   .arrow--outline .arrow__icon { stroke: var(--n-300); transition: stroke .2s; }
   .arrow--outline:hover .arrow__shape { stroke: var(--n-800); }
   .arrow--outline:hover .arrow__icon { stroke: var(--n-800); }
+  /* becomes active (orange) once the user has moved past the first project */
+  .arrow--outline.is-active .arrow__shape { fill: var(--brand-orange); stroke: var(--brand-orange); }
+  .arrow--outline.is-active .arrow__icon { stroke: var(--white); }
+  .arrow--outline.is-active:hover .arrow__shape { fill: var(--brand-orange-light); stroke: var(--brand-orange-light); }
+  .arrow--outline.is-active:hover { filter: drop-shadow(0 4px 12px rgba(222, 82, 34, .45)); }
+  .arrow--outline { transition: transform .3s var(--ease-out), filter .3s; }
   .arrow--solid { filter: drop-shadow(0 4px 12px rgba(222, 82, 34, 0)); transition: transform .3s var(--ease-out), filter .3s; }
   .arrow--solid:hover { filter: drop-shadow(0 4px 12px rgba(222, 82, 34, .45)); }
   .arrow--solid .arrow__shape { fill: var(--brand-orange); transition: fill .2s; }
@@ -223,11 +229,13 @@ const total = String(compareSlides.length).padStart(2, '0');
       if (e.key === 'End') { set(100); e.preventDefault(); }
     });
 
+    const prevBtn = document.querySelector<HTMLElement>('[data-ba-prev]');
     const go = (dir: number) => {
       const prev = slides[index];
       index = (index + dir + slides.length) % slides.length;
       const next = slides[index];
       current.textContent = String(index + 1).padStart(2, '0');
+      prevBtn?.classList.toggle('is-active', index > 0);
       slides.forEach((s) => s.setAttribute('aria-hidden', s === next ? 'false' : 'true'));
       next.classList.add('is-active');
       if (reduce) { prev.classList.remove('is-active'); set(50); return; }
@@ -240,7 +248,7 @@ const total = String(compareSlides.length).padStart(2, '0');
       animateTo(50, .6);
       gsap.fromTo(current, { yPercent: dir * 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .4, ease: 'power2.out' });
     };
-    document.querySelector('[data-ba-prev]')?.addEventListener('click', () => go(-1));
+    prevBtn?.addEventListener('click', () => go(-1));
     document.querySelector('[data-ba-next]')?.addEventListener('click', () => go(1));
   }
 </script>

@@ -128,43 +128,46 @@ const social = [
   .footer__cities { left: 12px; }
   .footer__copy { right: 8px; top: 363px; }
 
-  /* ---------- phones: stacked footer, brand line spans the screen ---------- */
+  /* ---------- phones: navigation → social → roof logo → text, everything centred ---------- */
   @media (max-width: 767px) {
     .footer__box {
-      display: grid;
-      grid-template-columns: 1fr auto;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       width: 100%;
       height: auto;
-      padding: 48px var(--gutter) calc(40px + env(safe-area-inset-bottom));
-      row-gap: 28px;
+      padding: 44px var(--gutter) calc(40px + env(safe-area-inset-bottom));
+      text-align: center;
     }
     .footer__box > * { position: static; }
-    .footer__logo { width: 120px; height: 53px; }
-    .footer__logo :global(svg) { width: 120px; height: 53px; }
-    .footer__social { grid-column: 2; grid-row: 1; justify-self: end; }
+    .footer__nav {
+      order: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0 24px;
+    }
+    .footer__nav a { padding: 10px 0; }
+    .footer__social { order: 2; margin-top: 20px; }
     .social { width: 48px; height: 48px; }
     .social__shape { width: 48px; height: 48px; }
     .social__icon :global(svg) { width: 21px; max-height: 21px; }
-    .footer__nav {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px 16px;
-    }
-    .footer__nav a { padding: 10px 0; }
-    .footer__brand { grid-column: 1 / -1; width: 100%; margin-top: 4px; }
+    .footer__logo { order: 3; width: 120px; height: 53px; margin-top: 36px; }
+    .footer__logo :global(svg) { width: 120px; height: 53px; }
+    .footer__brand { order: 4; width: 100%; margin-top: 12px; }
     .footer__tagline {
-      grid-column: 1 / -1;
+      order: 5;
       width: auto;
-      margin-top: -16px;
+      max-width: 30em;
+      margin-top: 12px;
       font-size: 11px;
       letter-spacing: .32em;
       line-height: 1.6;
       white-space: normal;
     }
-    .footer__muted { grid-column: 1 / -1; font-size: 13px; }
-    .footer__copy { margin-top: -16px; }
+    .footer__muted { font-size: 13px; }
+    .footer__cities { order: 6; margin-top: 24px; max-width: 30em; }
+    .footer__copy { order: 7; margin-top: 8px; }
   }
 </style>
 

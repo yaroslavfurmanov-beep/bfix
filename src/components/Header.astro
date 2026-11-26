@@ -216,12 +216,13 @@ const promo = Array.from({ length: 14 });
 <script>
   // hide the header while scrolling down, show it again on any scroll up
   const root = document.documentElement;
+  const phone = window.matchMedia('(max-width: 767px)'); // on phones the header always stays visible
   let lastY = window.scrollY;
   let ticking = false;
   const update = () => {
     const y = window.scrollY;
     const dy = y - lastY;
-    if (y < 80) root.classList.remove('header-hidden');
+    if (y < 80 || phone.matches) root.classList.remove('header-hidden');
     else if (dy > 6) root.classList.add('header-hidden');
     else if (dy < -6) root.classList.remove('header-hidden');
     root.classList.toggle('header-scrolled', y > 10);

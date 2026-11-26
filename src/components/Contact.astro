@@ -1,0 +1,291 @@
+---
+import { asset } from '../lib/asset';
+import Button from './Button.astro';
+import Bricks from './Bricks.astro';
+import paperplane from '../icons/paperplane.svg?raw';
+import phoneIcon from '../icons/phone.svg?raw';
+import { contactRight, directLeft, directRight } from '../data/bricks';
+
+const icons = {
+  user: '<svg viewBox="0 0 16 16" width="16" height="16"><circle cx="8" cy="5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 15c.6-3.2 3-4.8 6-4.8s5.4 1.6 6 4.8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+  mail: '<svg viewBox="0 0 16 16" width="16" height="16"><rect x="1" y="3" width="14" height="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M1.5 3.8 8 9l6.5-5.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+  tool: '<svg viewBox="0 0 16 16" width="16" height="16"><path d="M10.5 1.5a4 4 0 0 0-3.8 5.2L1.5 11.9l2.6 2.6 5.2-5.2a4 4 0 0 0 5.2-3.8l-2.3 2.3-2.2-.5-.5-2.2 2.3-2.3c-.4-.2-.9-.3-1.3-.3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+  msg: '<svg viewBox="0 0 16 16" width="16" height="16"><path d="M1 2h14v9.5H9.5L6 14.5v-3H1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 5.5h8M4 8h5" stroke="currentColor" stroke-width="1.4"/></svg>',
+};
+
+// floating pictures around the "direct" block (move with the cursor)
+const floaters = [
+  // positions from the layout (d_mainpage), relative to the "or contact me" title
+  { src: '/img/tool-left.webp', w: 441, h: 366, x: -11, y: 51, depth: 30 },
+  { src: '/img/tool-right.webp', w: 381, h: 382, x: 959, y: -101, depth: 45 },
+];
+---
+<section class="contact screen" id="contact">
+  <img class="contact__glove" src={asset("/img/glove.webp")} alt="Work glove" width="649" height="273" loading="lazy" data-reveal="right" />
+  <div class="wrap" data-fit>
+    <Bricks bricks={contactRight} origin={[0, 5564]} />
+
+    <h2 class="contact__title t-h1" data-reveal>Stay at<br /><b class="w6">contact</b></h2>
+
+    <div class="contact__grid">
+      <div class="contact__aside" data-reveal>
+        <p class="t-h3">Submit your request,<br />and i'll contact you within<br />15 minutes</p>
+        <p class="t-h3 contact__aside-2">You will receive an honest assessment with no hidden fees or imposed services</p>
+      </div>
+
+      <form class="form" data-form novalidate data-reveal>
+        <label class="field">
+          <span class="visually-hidden">Your name</span>
+          <input name="name" type="text" placeholder="your name..." autocomplete="name" required />
+          <span class="field__icon" set:html={icons.user} />
+        </label>
+        <label class="field">
+          <span class="visually-hidden">Your number</span>
+          <input name="phone" type="tel" placeholder="your number..." autocomplete="tel" required />
+          <span class="field__icon" set:html={phoneIcon} />
+        </label>
+        <label class="field">
+          <span class="visually-hidden">Your e-mail</span>
+          <input name="email" type="email" placeholder="your e-mail..." autocomplete="email" />
+          <span class="field__icon" set:html={icons.mail} />
+        </label>
+        <label class="field">
+          <span class="visually-hidden">I'm interested in</span>
+          <input name="topic" type="text" placeholder="i'm ineterested in..." list="f-topics" />
+          <span class="field__icon" set:html={icons.tool} />
+        </label>
+        <datalist id="f-topics">
+          <option value="Paint"></option>
+          <option value="Repairs"></option>
+          <option value="Caulking"></option>
+          <option value="Turnover"></option>
+          <option value="Exterior"></option>
+          <option value="Demolition"></option>
+        </datalist>
+        <label class="field field--area">
+          <span class="visually-hidden">Your message</span>
+          <textarea name="message" placeholder="your message..."></textarea>
+          <span class="field__icon" set:html={icons.msg} />
+        </label>
+        <div class="form__foot">
+          <Button type="submit" variant="send" width={187}><Fragment set:html={paperplane} />Send info</Button>
+          <p class="form__status t-body" data-form-status role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="direct screen" id="direct" data-parallax>
+  <div class="wrap direct__inner" data-fit>
+    <Bricks bricks={directLeft} origin={[0, 6196]} />
+    <Bricks bricks={directRight} origin={[0, 6196]} />
+
+    {floaters.map((f, k) => (
+      <span class={`floater floater--${k + 1}`} style={`left:${f.x}px;top:${f.y}px;width:${f.w}px;--rot:0deg`} data-depth={f.depth}>
+        <img src={asset(f.src)} alt="" width={f.w} height={f.h} loading="lazy" draggable="false" />
+      </span>
+    ))}
+
+    <h2 class="t-h1" data-reveal>or contact me<br /><b class="w7">direct</b></h2>
+    <a class="direct__big t-h2 w6" href="mailto:servicebfix@gmail.com" data-reveal>servicebfix@gmail.com</a>
+    <a class="direct__big direct__phone t-h2 w6" href="tel:+15619386333" data-reveal>+1 561 938 6333</a>
+    <ul class="direct__msgr" data-reveal>
+      <li><a class="link w6" href="https://t.me/" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a class="link w6" href="https://wa.me/15619386333" target="_blank" rel="noopener">Whatsapp</a></li>
+      <li><a class="link w6" href="viber://chat?number=%2B15619386333">Viber</a></li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact { overflow: hidden; }
+  /* the arm comes in from the right edge of the screen, so the glove is never cut */
+  .contact__glove {
+    position: absolute;
+    /* starts right after the form, but always runs off the right edge of the screen */
+    left: max(calc(50% + 316px), calc(100% - 591px));
+    top: calc(50% - 150px);
+    z-index: 0;
+    width: 649px;
+    height: 273px;
+    pointer-events: none;
+  }
+  /* no stacking context here, so the bricks stay behind the glove and the form above it */
+  .contact .wrap { isolation: auto; }
+  .contact__title, .contact__grid { position: relative; z-index: 1; }
+  .contact__title { width: 592px; margin-left: 304px; text-align: center; }
+  .contact__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 304px 592px;
+    margin-top: 30px;
+  }
+  .contact__aside { padding-left: 3px; }
+  .contact__aside .t-h3 { max-width: 288px; }
+  .contact__aside-2 { margin-top: 54px; margin-left: -3px; }
+
+  .form {
+    display: grid;
+    grid-template-columns: 288px 288px;
+    column-gap: 16px;
+    row-gap: 10px;
+    align-content: start;
+  }
+  .field {
+    position: relative;
+    display: block;
+    height: 56px;
+    background: var(--input);
+    box-shadow: inset 0 0 0 0 var(--brand-orange);
+    transition: box-shadow .25s, background .25s;
+  }
+  .field:hover { background: #cbcbcb; }
+  .field:focus-within { box-shadow: inset 0 -2px 0 0 var(--brand-orange); background: #dadada; }
+  .field.is-invalid { box-shadow: inset 0 -2px 0 0 #c62828; }
+  .field input,
+  .field textarea {
+    width: 100%;
+    height: 100%;
+    padding: 0 48px 0 16px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--n-800);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    outline: none;
+  }
+  .field textarea { padding-top: 25px; padding-bottom: 16px; resize: none; }
+  .field ::placeholder { color: var(--n-600); text-transform: uppercase; opacity: 1; }
+  .field__icon {
+    position: absolute;
+    top: 20px;
+    right: 18px;
+    display: grid;
+    color: var(--n-600);
+    pointer-events: none;
+    transition: color .25s, transform .3s var(--ease-out);
+  }
+  .field__icon :global(svg) { width: 16px; height: 16px; }
+  .field:focus-within .field__icon { color: var(--brand-orange); transform: scale(1.12); }
+  .field--area {
+    grid-column: 1 / -1;
+    height: 116px;
+    margin-top: 8px;
+  }
+  .form__foot {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .form__status { color: var(--n-700); min-height: 20px; }
+
+  /* ---------- direct ---------- */
+  .direct { overflow: hidden; }
+  .direct__inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .direct__inner > :not(.bricks):not(.floater) { position: relative; z-index: 1; }
+  .direct__big {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+    transition: color .2s;
+  }
+  .direct__big:hover { color: var(--brand-orange); }
+  .direct__inner > .direct__big:first-of-type { margin-top: 32px; }
+  .direct__phone { margin-top: 17px; }
+  .direct__msgr { display: flex; gap: 24px; margin-top: 20px; font-size: 14px; line-height: 1.2; }
+
+  .floater {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    transform: rotate(var(--rot));
+    will-change: transform;
+  }
+  .floater img { width: 100%; height: auto; }
+
+  /* ---------- phones ---------- */
+  @media (max-width: 767px) {
+    /* glove comes in from the right edge above the title */
+    .contact { padding-top: calc(min(74vw, 340px) * .42 + 40px); }
+    .contact__glove {
+      left: auto;
+      right: -14vw;
+      top: 28px;
+      width: min(74vw, 340px);
+      height: auto;
+    }
+    .contact__title { width: auto; margin-left: 0; text-align: left; }
+    .contact__grid { display: block; margin-top: 24px; }
+    .contact__aside { padding-left: 0; }
+    .contact__aside .t-h3 { max-width: 34ch; }
+    .contact__aside-2 { margin: 16px 0 0; font-size: 17px; color: var(--n-700); }
+    .form { grid-template-columns: 1fr; row-gap: 10px; margin-top: 28px; max-width: 560px; }
+    .field input, .field textarea { font-size: 16px; } /* 16px+ stops iOS from zooming into the field */
+    .field--area { height: 132px; margin-top: 0; }
+    .form__foot { margin-top: 20px; }
+    .form__foot :global(.btn) { width: 100%; }
+
+    .direct { padding: 170px 0 180px; }
+    .direct h2 { font-size: min(var(--m-h1), 10.4vw); }
+    .direct__big { font-size: clamp(21px, 6.9vw, 34px); letter-spacing: -0.05em; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+    .direct__inner > .direct__big:first-of-type { margin-top: 28px; }
+    .direct__phone { margin-top: 14px; }
+    .direct__msgr { gap: 8px 24px; flex-wrap: wrap; justify-content: center; margin-top: 20px; font-size: 15px; }
+    .direct__msgr a { display: inline-block; padding: 10px 0; }
+    .floater--1 { left: -4% !important; top: auto !important; bottom: -175px; width: min(42%, 210px) !important; }
+    .floater--2 { left: auto !important; right: -2%; top: -175px !important; width: min(30%, 150px) !important; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  /* form: validates only, nothing is sent yet */
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let ok = true;
+    form.querySelectorAll<HTMLInputElement>('[required]').forEach((f) => {
+      const bad = !f.value.trim();
+      f.closest('.field')?.classList.toggle('is-invalid', bad);
+      if (bad) ok = false;
+    });
+    if (!status) return;
+    if (!ok) { status.textContent = 'Please add your name and number.'; return; }
+    status.textContent = "Thanks! I'll get back to you within 15 minutes.";
+    form.reset();
+  });
+  form?.addEventListener('input', (e) => (e.target as HTMLElement).closest('.field')?.classList.remove('is-invalid'));
+
+  /* direct block: pictures drift with the cursor */
+  const area = document.querySelector<HTMLElement>('[data-parallax]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (area && !reduce && matchMedia('(pointer: fine)').matches) {
+    const items = [...area.querySelectorAll<HTMLElement>('[data-depth]')].map((el) => ({
+      el,
+      depth: Number(el.dataset.depth) || 20,
+      x: gsap.quickTo(el, 'x', { duration: 0.9, ease: 'power3.out' }),
+      y: gsap.quickTo(el, 'y', { duration: 0.9, ease: 'power3.out' }),
+      r: gsap.quickTo(el, 'rotation', { duration: 1.2, ease: 'power3.out' }),
+    }));
+    const base = items.map((i) => parseFloat(getComputedStyle(i.el).getPropertyValue('--rot')) || 0);
+    items.forEach((i, k) => gsap.set(i.el, { rotation: base[k] }));
+    area.addEventListener('pointermove', (e) => {
+      const nx = e.clientX / window.innerWidth - 0.5;
+      const ny = e.clientY / window.innerHeight - 0.5;
+      items.forEach((i, k) => {
+        i.x(-nx * i.depth * 1.6);
+        i.y(-ny * i.depth * 1.6);
+        i.r(base[k] + nx * i.depth * 0.15);
+      });
+    });
+    area.addEventListener('pointerleave', () => items.forEach((i, k) => { i.x(0); i.y(0); i.r(base[k]); }));
+  }
+</script>

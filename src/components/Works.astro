@@ -1,0 +1,102 @@
+---
+import { asset } from '../lib/asset';
+import Button from './Button.astro';
+import Bricks from './Bricks.astro';
+import { worksLeft, worksRight } from '../data/bricks';
+import comment from '../icons/comment.svg?raw';
+import { projects } from '../data/content';
+---
+<section class="works screen" id="works">
+  <div class="wrap" data-fit>
+    <Bricks bricks={worksRight} origin={[0, 3110]} />
+    <h2 class="works__title t-h1" data-reveal>Our works<br /><b class="w7">we are<br class="m-br" /> proud of</b></h2>
+
+    <article class="featured">
+      <a class="featured__media" href="#works" data-reveal="left">
+        <img src={asset("/img/project-featured.webp")} alt="Cottage in the Lisnyky district" width="702" height="389" loading="lazy" />
+      </a>
+      <div class="featured__body" data-reveal>
+        <p class="t-label tag">demolition / flip</p>
+        <h3 class="featured__name t-h2 w6">Cottage<br />in the Lisnyky<br />district</h3>
+        <p class="featured__text t-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vestibulum, nisl vel ultrices placerat, turpis lectus dictum urna, a facilisis erat est at lorem.</p>
+        <a class="t-label link-underline more" href="#works">about project</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="works-more screen">
+  <div class="wrap" data-fit>
+    <Bricks bricks={worksLeft} origin={[0, 3740]} />
+    <ul class="works__grid m-rail" aria-label="Projects, swipe for more">
+      {projects.map((p) => (
+        <li class="pcard" data-reveal>
+          <a class="pcard__media" href={p.href}>
+            <img src={p.image} alt={p.title} width="390" height="389" loading="lazy" />
+          </a>
+          <p class="t-label tag pcard__tag">{p.tags}</p>
+          <h3 class="t-h3 pcard__title">{p.title}</h3>
+          <a class="t-label link-underline more" href={p.href}>about project</a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="works__cta" data-reveal>
+      <Button href="#works" variant="orange"><Fragment set:html={comment} />Full portfolio</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .works__title { text-align: center; }
+
+  .tag { color: var(--n-600); }
+  .more { display: inline-block; margin-top: 8px; transition: color .2s; }
+  .more:hover { color: var(--brand-orange); }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 702px 344px;
+    column-gap: 60px;
+    margin-top: 40px;
+  }
+  .featured__media, .pcard__media { display: block; overflow: hidden; }
+  .featured__media img, .pcard__media img {
+    --cx: 25.5px;
+    --cy: 26px;
+    width: 100%;
+    height: 389px;
+    object-fit: cover;
+    transition: transform .8s var(--ease-out);
+  }
+  .featured__media:hover img, .pcard__media:hover img { transform: scale(1.04); }
+  .featured__media, .pcard__media { clip-path: polygon(0 26px, 25.5px 0, 100% 0, 100% calc(100% - 27.5px), calc(100% - 33px) 100%, 0 100%); }
+  .featured__body { padding-top: 42px; }
+  .featured__name { margin-top: 8px; width: 445px; }
+  .featured__text { margin-top: 16px; }
+  .featured__body .more { margin-top: 16px; }
+
+  .works__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 390px);
+    column-gap: 15px;
+  }
+  .pcard__tag { margin-top: 23px; }
+  .pcard__title { margin-top: 8px; }
+
+  .works__cta { display: flex; justify-content: center; margin-top: 40px; }
+
+  /* ---------- phones: featured project stacked, other projects in a swipe rail ---------- */
+  @media (max-width: 767px) {
+    .works-more { padding-top: 16px; }
+    .featured { display: block; margin-top: 32px; }
+    .featured__media img { height: auto; aspect-ratio: 4 / 3; }
+    .featured__body { padding-top: 20px; }
+    .featured__name { width: auto; }
+    .featured__text { max-width: 40ch; }
+    .pcard__media img { height: auto; aspect-ratio: 1; }
+    .pcard__tag { margin-top: 16px; }
+    .works__cta { margin-top: 32px; }
+    .works__cta :global(.btn) { width: 100%; max-width: 400px; }
+  }
+</style>

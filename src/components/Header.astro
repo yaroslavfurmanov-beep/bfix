@@ -1,0 +1,256 @@
+---
+import logo from '../icons/logo.svg?raw';
+import paperplane from '../icons/paperplane.svg?raw';
+import phone from '../icons/phone.svg?raw';
+
+const nav = [
+  { label: 'Services', href: '#services' },
+  { label: 'Reviews', href: '#reviews' },
+  { label: 'About me', href: '#about' },
+  { label: 'Blog', href: '#blog' },
+];
+const promo = Array.from({ length: 14 });
+---
+<header class="header">
+  <div class="wrap header__row">
+    <a class="header__logo" href="#top" aria-label="BFIX — home" set:html={logo} />
+    <nav class="header__nav" aria-label="Main">
+      {nav.map((n) => <a class="t-label link" href={n.href}>{n.label}</a>)}
+    </nav>
+    <a class="header__contact header__contact--mail t-label" href="mailto:bogdan_furman@gmail.com">
+      <span set:html={paperplane} />
+      <span class="header__email link">bogdan_furman@gmail.com</span>
+    </a>
+    <a class="header__contact header__contact--tel t-label" href="tel:+12124567890">
+      <span set:html={phone} />
+      <span class="link">+1-212-456-7890</span>
+    </a>
+
+    <!-- phones only -->
+    <a class="header__m-call" href="tel:+12124567890" aria-label="Call +1-212-456-7890" set:html={phone} />
+    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="m-menu" data-burger>
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="m-menu" id="m-menu" data-menu hidden>
+  <nav class="m-menu__nav" aria-label="Mobile">
+    {nav.map((n, i) => <a class="m-menu__link" href={n.href} style={`--i:${i}`}>{n.label}</a>)}
+  </nav>
+  <div class="m-menu__contacts">
+    <a href="mailto:bogdan_furman@gmail.com"><span set:html={paperplane} />bogdan_furman@gmail.com</a>
+    <a href="tel:+12124567890"><span set:html={phone} />+1-212-456-7890</a>
+  </div>
+</div>
+
+<a class="promo" href="#contact" aria-label="10% off your first job — fill in the request form">
+  <div class="promo__track" aria-hidden="true">
+    {[0, 1].map(() => (
+      <div class="promo__group">
+        {promo.map(() => (
+          <span class="promo__item">🎁 <b>10% off</b> your first job</span>
+        ))}
+      </div>
+    ))}
+  </div>
+</a>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    background: var(--n-900);
+    color: var(--white);
+    transition: transform .45s var(--ease-out), box-shadow .3s;
+  }
+  :global(html.header-hidden) .header { transform: translateY(-100%); }
+  :global(html.header-scrolled) .header { box-shadow: 0 6px 24px rgba(0, 0, 0, .18); }
+  .header__row {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  .header__logo { width: 53px; height: 32px; transition: opacity .2s; }
+  .header__logo:hover { opacity: .8; }
+  .header__logo :global(svg) { width: 53px; height: 33px; }
+  .header__nav {
+    display: flex;
+    gap: 48px;
+    margin-left: 150px;
+  }
+  .header__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: none;
+  }
+  .header__contact :global(svg) { width: 16px; height: 16px; }
+  .header__contact--mail { position: absolute; left: 817px; }
+  .header__contact--tel { position: absolute; left: 1152px; }
+  .header__email { text-transform: none; }
+
+  .promo {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    height: 32px;
+    overflow: hidden;
+    background: var(--brand-green);
+    color: var(--white);
+  }
+  .promo__track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    animation: marquee 40s linear infinite;
+  }
+  .promo:hover .promo__track { animation-play-state: paused; }
+  .promo { transition: background .25s; }
+  .promo:hover { background: var(--brand-green-light); }
+  .promo:hover .promo__item { text-decoration: underline; text-underline-offset: 3px; }
+  .promo:focus-visible { outline: 2px solid var(--white); outline-offset: -4px; }
+  .promo__group {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-right: 32px;
+  }
+  .promo__item {
+    font-size: 14px;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  /* ---------- phones ---------- */
+  .header__m-call, .burger, .m-menu { display: none; }
+  @media (max-width: 767px) {
+    .header__nav, .header__contact { display: none; }
+    .header__row { gap: 8px; }
+    .header__m-call {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-left: auto;
+      color: var(--white);
+    }
+    .header__m-call :global(svg) { width: 18px; height: 18px; }
+    .burger {
+      position: relative;
+      display: block;
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
+    .burger span {
+      position: absolute;
+      left: 11px;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      transition: transform .35s var(--ease-out), opacity .2s;
+    }
+    .burger span:nth-child(1) { top: 15px; }
+    .burger span:nth-child(2) { top: 21px; }
+    .burger span:nth-child(3) { top: 27px; }
+    :global(html.menu-open) .burger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    :global(html.menu-open) .burger span:nth-child(2) { opacity: 0; }
+    :global(html.menu-open) .burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .m-menu {
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      z-index: 49;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 32px var(--gutter) calc(32px + env(safe-area-inset-bottom));
+      background: var(--n-900);
+      color: var(--white);
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: opacity .3s, transform .4s var(--ease-out);
+    }
+    .m-menu[hidden] { display: none; }
+    :global(html.menu-open) .m-menu { opacity: 1; transform: none; }
+    .m-menu__nav { display: flex; flex-direction: column; gap: 8px; }
+    .m-menu__link {
+      font-size: clamp(40px, 12vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.06em;
+      font-weight: 600;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .4s calc(var(--i) * 60ms + 80ms), transform .5s var(--ease-out) calc(var(--i) * 60ms + 80ms), color .2s;
+    }
+    :global(html.menu-open) .m-menu__link { opacity: 1; transform: none; }
+    .m-menu__link:active { color: var(--brand-orange-light); }
+    .m-menu__contacts { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; font-weight: 700; font-size: 15px; }
+    .m-menu__contacts a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
+    .m-menu__contacts :global(svg) { width: 16px; height: 16px; }
+    :global(html.menu-open) { overflow: hidden; }
+    :global(html.menu-open) .header { transform: none; }
+
+    .promo__item { font-size: 13px; }
+  }
+
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .promo__track { animation: none; }
+  }
+</style>
+
+<script>
+  // hide the header while scrolling down, show it again on any scroll up
+  const root = document.documentElement;
+  let lastY = window.scrollY;
+  let ticking = false;
+  const update = () => {
+    const y = window.scrollY;
+    const dy = y - lastY;
+    if (y < 80) root.classList.remove('header-hidden');
+    else if (dy > 6) root.classList.add('header-hidden');
+    else if (dy < -6) root.classList.remove('header-hidden');
+    root.classList.toggle('header-scrolled', y > 10);
+    if (Math.abs(dy) > 6 || y < 80) lastY = y;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  // mobile menu
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const setMenu = (open: boolean) => {
+    if (!burger || !menu) return;
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (open) {
+      menu.hidden = false;
+      requestAnimationFrame(() => root.classList.add('menu-open'));
+    } else {
+      root.classList.remove('menu-open');
+      setTimeout(() => { if (!root.classList.contains('menu-open')) menu.hidden = true; }, 350);
+    }
+  };
+  burger?.addEventListener('click', () => setMenu(!root.classList.contains('menu-open')));
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+  matchMedia('(min-width: 768px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+
+  // keep it visible while the keyboard focus is inside
+  document.querySelector('.header')?.addEventListener('focusin', () => root.classList.remove('header-hidden'));
+</script>

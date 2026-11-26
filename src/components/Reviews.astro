@@ -1,0 +1,122 @@
+---
+import { asset } from '../lib/asset';
+import BrushCard from './BrushCard.astro';
+import Button from './Button.astro';
+import check from '../icons/check.svg?raw';
+import instagram from '../icons/instagram.svg?raw';
+import comment from '../icons/comment.svg?raw';
+import { reviews } from '../data/content';
+---
+<section class="reviews" id="reviews">
+  <div class="wrap reviews__grid">
+    <div class="reviews__aside">
+      <BrushCard color="green">
+        <div class="rating" data-card-text>
+          <p class="rating__value t-h1 w7"><span data-count="4.8">4.8</span></p>
+          <p class="t-h1">Rating</p>
+          <p class="rating__sub t-h3">Real reviews, straight from RabbitTask</p>
+        </div>
+        <img class="rating__tools rating__tools--b" src={asset("/img/tools-b.webp")} alt="" width="232" height="166" loading="lazy" data-card-tool />
+        <img class="rating__tools rating__tools--a" src={asset("/img/tools-a.webp")} alt="" width="176" height="99" loading="lazy" data-card-tool />
+        <img class="rating__rabbit" src={asset("/img/rabbit.webp")} alt="Rabbit handyman among tools" width="308" height="482" loading="lazy" data-card-tool />
+      </BrushCard>
+    </div>
+
+    <div class="reviews__main">
+      <ul class="reviews__list">
+        {reviews.map((r) => (
+          <li class="review" data-list-item>
+            <span class="badge t-label">
+              <svg class="badge__shape" viewBox="0 0 138 34" width="138" height="34" aria-hidden="true"><polygon points="1,13.6 14.2,1 137,1 137,20.5 124.2,33 1,33" /></svg>
+              Verified
+              <span class="badge__icon" set:html={check} />
+            </span>
+            <p class="review__name t-h2 w6">{r.name}</p>
+            <p class="review__text t-body" set:html={r.text.replaceAll('\n', '<br />')} />
+            <p class="review__date t-h3">{r.date}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="reviews__actions" data-reveal>
+        <Button href="https://www.rabbittask.com" variant="green" target="_blank" rel="noopener"><Fragment set:html={comment} />View reviews</Button>
+        <Button href="https://www.instagram.com" variant="outline-dark" width={187} target="_blank" rel="noopener"><Fragment set:html={instagram} />Instagram</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews { padding: 96px 0 140px; }
+  .reviews__grid {
+    display: grid;
+    grid-template-columns: 592px 390px;
+    column-gap: 118px;
+    align-items: start;
+    padding-left: 102px;
+  }
+  .reviews__aside { position: sticky; top: var(--sticky-top);
+    transition: top .45s var(--ease-out);
+    transform: scale(var(--card-scale, 1));
+    transform-origin: 0 0;
+    will-change: transform; }
+
+  .rating {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    color: var(--n-100);
+  }
+  .rating__sub { margin-top: 22px; max-width: 242px; }
+  .rating__rabbit { position: absolute; z-index: 1; left: 184px; top: 166px; width: 308px; height: 482px; }
+  .rating__tools { position: absolute; pointer-events: none; }
+  .rating__tools--b { left: 406px; top: 460px; width: 232px; height: 166px; }
+  .rating__tools--a { left: 0; top: 527px; width: 176px; height: 99px; }
+
+  .reviews__list { display: flex; flex-direction: column; gap: 40px; }
+  .review { display: flex; flex-direction: column; gap: 16px; }
+
+  .badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    align-self: flex-start;
+    justify-content: center;
+    width: 138px;
+    height: 34px;
+    color: var(--n-300);
+  }
+  .badge__shape { position: absolute; inset: 0; fill: none; stroke: var(--n-300); stroke-width: 2; overflow: visible; }
+  .badge__icon { position: relative; display: grid; }
+  .badge__icon :global(svg) { width: 12px; height: 12px; }
+
+  .review__name { color: var(--n-800); }
+  .review__text { color: var(--n-950); }
+  .review__date { color: var(--n-400); }
+
+  .reviews__actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 32px;
+    margin-left: -2px;
+  }
+
+  /* ---------- phones: rating card on top (not sticky), reviews in one column ---------- */
+  @media (max-width: 767px) {
+    .reviews { padding: 64px 0 72px; }
+    .reviews__grid { display: block; padding-left: var(--gutter); }
+    .reviews__aside { position: static; transform: none; max-width: 520px; margin: 0 auto 88px; }
+    .rating { left: 9.5cqi; top: 9.5cqi; }
+    .rating :global(.t-h1) { font-size: 15.2cqi; letter-spacing: -0.065em; }
+    .rating__sub { margin-top: 3.7cqi; max-width: 34cqi; font-size: max(15px, 4.05cqi); }
+    .rating__rabbit { left: 40%; top: 31%; width: 47%; height: auto; }
+    .rating__tools--b { left: 60%; top: 77.7%; width: 39.2%; height: auto; }
+    .rating__tools--a { left: 0; top: 89%; width: 29.7%; height: auto; }
+
+    .reviews__main { max-width: 560px; margin: 0 auto; }
+    .reviews__list { gap: 36px; }
+    .review { gap: 12px; }
+    .reviews__actions { flex-direction: column; gap: 12px; margin: 32px 0 0; }
+    .reviews__actions :global(.btn) { width: 100%; max-width: 400px; }
+  }
+</style>

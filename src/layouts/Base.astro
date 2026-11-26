@@ -1,0 +1,25 @@
+---
+import { asset } from '../lib/asset';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+
+interface Props { title?: string; description?: string }
+const {
+  title = 'BFIX — Handyman services in Florida',
+  description = 'Handyman services in Florida you can trust: painting, repairs, caulking, turnover, exterior and demolition. 3 years, 110+ jobs.',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={asset("/favicon.svg")} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

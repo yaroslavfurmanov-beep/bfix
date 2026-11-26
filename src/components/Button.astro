@@ -1,0 +1,116 @@
+---
+/**
+ * Chamfered button from the UI-kit (188×56, top-left & bottom-right cut).
+ * variant: orange | green | send | outline-light | outline-dark
+ */
+interface Props {
+  href?: string;
+  variant?: 'orange' | 'green' | 'send' | 'outline-light' | 'outline-dark';
+  width?: number;
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: any;
+}
+const { href, variant = 'orange', width = 188, type = 'button', class: cls = '', ...rest } = Astro.props;
+const w = width;
+const h = 56;
+const outline = variant.startsWith('outline');
+const sw = variant === 'outline-light' ? 3 : 2;
+const i = outline ? sw / 2 : 0; // keep stroke inside the box
+const pts = [
+  [i, 12.69],
+  [14.03, i],
+  [w - i, i],
+  [w - i, 43.77],
+  [w - 13.53, h - i],
+  [i, h - i],
+].map((p) => p.join(',')).join(' ');
+const Tag = href ? 'a' : 'button';
+---
+<Tag
+  class={`btn btn--${variant} ${cls}`}
+  href={href}
+  type={href ? undefined : type}
+  style={`--w:${w}px`}
+  {...rest}
+>
+  <svg class="btn__shape" viewBox={`0 0 ${w} ${h}`} width={w} height={h} aria-hidden="true" data-inset={i}>
+    <polygon points={pts} />
+  </svg>
+  <span class="btn__inner t-label"><slot /></span>
+</Tag>
+
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--w);
+    height: 56px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--n-100);
+    transition: transform .35s var(--ease-out), filter .35s var(--ease-out);
+  }
+  .btn__shape {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+  .btn__shape polygon { transition: fill .25s, stroke .25s; }
+  .btn__inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .btn__inner :global(svg) { width: 16px; height: 16px; flex: none; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn:focus-visible { outline: 2px solid var(--n-800); outline-offset: 4px; }
+
+  /* glow only on hover */
+  .btn--orange, .btn--send { filter: drop-shadow(0 4px 12px rgba(222, 82, 34, 0)); }
+  .btn--orange:hover { filter: var(--shadow-orange); }
+  .btn--orange polygon { fill: var(--brand-orange); }
+  .btn--orange:hover polygon { fill: var(--brand-orange-light); }
+
+  .btn--send polygon { fill: var(--brand-orange-light); }
+  .btn--send:hover { filter: var(--shadow-orange); }
+  .btn--send:hover polygon { fill: var(--brand-orange); }
+
+  .btn--green { filter: drop-shadow(0 4px 12px rgba(66, 187, 84, 0)); color: var(--white); }
+  .btn--green:hover { filter: var(--shadow-green); }
+  .btn--green polygon { fill: var(--brand-green); }
+  .btn--green:hover polygon { fill: var(--brand-green-light); }
+
+  .btn--outline-light { color: var(--white); }
+  .btn--outline-light polygon { fill: transparent; stroke: var(--white); stroke-width: 3; }
+  .btn--outline-light:hover polygon { fill: rgba(255, 255, 255, .12); }
+
+  .btn--outline-dark { color: var(--n-800); }
+  .btn--outline-dark polygon { fill: transparent; stroke: var(--n-800); stroke-width: 2; }
+  .btn--outline-dark:hover { color: var(--n-100); }
+  .btn--outline-dark:hover polygon { fill: var(--n-800); }
+  .btn__shape { width: 100%; height: 100%; }
+</style>
+
+<script>
+  // keep the chamfer corners the same size when a button is stretched (full-width buttons on phones)
+  const draw = (btn: HTMLElement) => {
+    const svg = btn.querySelector<SVGSVGElement>('.btn__shape');
+    const poly = svg?.querySelector('polygon');
+    if (!svg || !poly) return;
+    const w = btn.offsetWidth || 188;
+    const i = parseFloat(svg.dataset.inset || '0');
+    const h = 56;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    poly.setAttribute('points', [[i, 12.69], [14.03, i], [w - i, i], [w - i, 43.77], [w - 13.53, h - i], [i, h - i]].map((p) => p.join(',')).join(' '));
+  };
+  const ro = new ResizeObserver((entries) => entries.forEach((e) => draw(e.target as HTMLElement)));
+  document.querySelectorAll<HTMLElement>('.btn').forEach((b) => ro.observe(b));
+</script>

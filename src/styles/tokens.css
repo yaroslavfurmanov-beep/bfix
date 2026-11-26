@@ -1,0 +1,31 @@
+/* BFIX UI-kit tokens (from Figma "BFIX Colors" + text styles) */
+:root {
+  --brand-orange: #DE5222;
+  --brand-orange-light: #E75F30;
+  --brand-green: #42BB54;
+  --brand-green-light: #54CD66;
+
+  --n-950: #0E0E0E;
+  --n-900: #242424;
+  --n-800: #2E2E2E;
+  --n-700: #464646;
+  --n-600: #666666;
+  --n-400: #B3B3B3;
+  --n-300: #C0C0C0;
+  --n-200: #D6D6D6;
+  --n-100: #E6E6E6;
+  --white: #FFFFFF;
+  --input: #D2D2D2;
+
+  --font: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --page: 1400px;
+  --gutter: 100px;
+  --header-h: 56px;
+  --sticky-top: calc(var(--header-h) + 24px);
+
+  --shadow-orange: drop-shadow(0 4px 12px rgba(222, 82, 34, .45));
+  --shadow-green: drop-shadow(0 4px 12px rgba(66, 187, 84, .5));
+
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+}

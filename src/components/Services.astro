@@ -1,0 +1,159 @@
+---
+import { asset } from '../lib/asset';
+import BrushCard from './BrushCard.astro';
+import Bricks from './Bricks.astro';
+import { servicesMid, servicesRight } from '../data/bricks';
+import { services } from '../data/content';
+---
+<section class="services" id="services">
+  <div class="wrap services__grid">
+    <Bricks bricks={servicesMid} origin={[0, 2422]} />
+    <Bricks bricks={servicesRight} origin={[0, 2422]} />
+
+    <!-- left: sticky on desktop -->
+    <div class="services__aside">
+      <BrushCard class="services__card" color="orange">
+        <h2 class="services__heading t-h1" data-card-text>
+          <span>How can i</span>
+          <b class="w7">be useful?</b>
+        </h2>
+        <img class="services__tool" src={asset("/img/screwdriver.webp")} alt="Orange screwdriver" width="701" height="383" loading="lazy" data-card-tool />
+        <p class="services__note t-h3" data-card-text>Send a photo and I'll tell you what your job costs, in writing</p>
+      </BrushCard>
+    </div>
+
+    <!-- right: scrolling list -->
+    <ol class="services__list">
+      {services.map((s) => (
+        <li class="service" data-service>
+          <h3 class="service__title" data-service-title>{s.title}</h3>
+          <p class="service__text t-body" data-service-text set:html={s.text.replace('\n', '<br />')} />
+          <div class="service__pair">
+            <figure class="service__fig" data-service-img>
+              <img class="cut" src={s.before} alt={`${s.title} — before`} width="187" height="276" loading="lazy" />
+              <figcaption class="t-label">Before</figcaption>
+            </figure>
+            <figure class="service__fig" data-service-img>
+              <img class="cut" src={s.after} alt={`${s.title} — after`} width="187" height="276" loading="lazy" />
+              <figcaption class="t-label">After</figcaption>
+            </figure>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .services { padding: 96px 0 140px; }
+  .services__grid {
+    display: grid;
+    grid-template-columns: 592px 390px;
+    column-gap: 118px;
+    align-items: start;
+    padding-left: 101px;
+  }
+
+  .services__aside {
+    position: sticky;
+    top: var(--sticky-top);
+    transition: top .45s var(--ease-out);
+    transform: scale(var(--card-scale, 1));
+    transform-origin: 0 0;
+    will-change: transform;
+    z-index: 1;
+  }
+  .services__heading {
+    position: absolute;
+    left: 55px;
+    top: 56px;
+    display: flex;
+    flex-direction: column;
+    color: var(--n-100);
+  }
+  .services__heading b { max-width: 400px; }
+  .services__tool {
+    position: absolute;
+    left: -87px;
+    top: 200px;
+    width: 701px;
+    height: 383px;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .services__note {
+    position: absolute;
+    left: 299px;
+    top: 449px;
+    width: 242px;
+    text-align: right;
+    color: var(--n-100);
+  }
+
+  .services__list {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    padding-top: 57px;
+  }
+  .service {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 19px;
+    text-align: center;
+  }
+  .service__title {
+    font-size: 90px;
+    line-height: .9;
+    letter-spacing: -6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--n-800);
+  }
+  .service__text { max-width: 390px; margin-top: -3px; }
+  .service__pair { display: flex; gap: 16px; }
+  .service__fig {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    text-align: center;
+  }
+  .service__fig figcaption { color: var(--n-800); }
+  .service__fig img {
+    --cx: 27.6px;
+    --cy: 27.6px;
+    width: 187px;
+    height: 276px;
+    object-fit: cover;
+    transition: transform .6s var(--ease-out);
+  }
+  .service__fig:hover img { transform: scale(1.03); }
+
+  /* ---------- phones: card on top (not sticky), services in one column ---------- */
+  @media (max-width: 767px) {
+    .services { padding: 64px 0 72px; }
+    .services__grid { display: block; padding-left: var(--gutter); }
+    .services__aside { position: static; transform: none; max-width: 520px; margin: 0 auto; }
+    .services__heading { left: 9.3%; top: 9.5%; font-size: 15.2cqi; letter-spacing: -0.065em; }
+    .services__heading b { max-width: 68cqi; }
+    .services__tool { left: -8%; top: 31%; width: 100%; height: auto; }
+    .services__note {
+      left: auto;
+      right: 8.5%;
+      top: auto;
+      bottom: 8%;
+      width: 50%;
+      font-size: max(15px, 4.4cqi);
+    }
+
+    .services__list { gap: 56px; padding-top: 72px; }
+    .service { gap: 16px; }
+    .service__title { font-size: clamp(44px, 13vw, 64px); letter-spacing: -0.065em; }
+    .service__text { max-width: 34ch; margin-top: 0; }
+    .service__pair { width: 100%; max-width: 520px; gap: 12px; }
+    .service__fig { flex: 1 1 0; min-width: 0; }
+    .service__fig img { width: 100%; height: auto; aspect-ratio: 187 / 276; }
+  }
+</style>

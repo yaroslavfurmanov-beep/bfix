@@ -1,0 +1,40 @@
+---
+/**
+ * Decorative brick wall exactly as in the Figma layout.
+ * `bricks` are the top-left corners of the 182×65 bricks in page (frame) coordinates,
+ * `origin` is the page point that maps to the top-left of the parent (.wrap) in the section.
+ */
+interface Props {
+  bricks: [number, number][];
+  origin: [number, number];
+  class?: string;
+}
+const { bricks, origin, class: cls = '' } = Astro.props;
+const W = 182, H = 65, S = 3;
+const minX = Math.min(...bricks.map((b) => b[0]));
+const minY = Math.min(...bricks.map((b) => b[1]));
+const maxX = Math.max(...bricks.map((b) => b[0])) + W;
+const maxY = Math.max(...bricks.map((b) => b[1])) + H;
+const vw = maxX - minX + S;
+const vh = maxY - minY + S;
+const left = minX - origin[0] - S / 2;
+const top = minY - origin[1] - S / 2;
+---
+<svg
+  class={`bricks ${cls}`}
+  viewBox={`0 0 ${vw} ${vh}`}
+  width={vw}
+  height={vh}
+  style={`left:${left}px;top:${top}px`}
+  aria-hidden="true"
+  data-bricks
+>
+  {bricks.map(([x, y]) => (
+    <rect x={x - minX + S / 2} y={y - minY + S / 2} width={W} height={H} />
+  ))}
+</svg>
+
+<style>
+  .bricks { position: absolute; z-index: -1; pointer-events: none; overflow: visible; }
+  .bricks rect { fill: none; stroke: #D6D6D6; stroke-width: 3; }
+</style>

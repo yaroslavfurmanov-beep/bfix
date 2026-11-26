@@ -1,0 +1,185 @@
+---
+import logo from '../icons/logo2.svg?raw';
+import rabbit from '../icons/rabbittask.svg?raw';
+import facebook from '../icons/facebook.svg?raw';
+import instagram from '../icons/instagram-fill.svg?raw';
+
+const pages = [
+  { label: 'why me?', href: '#about' },
+  { label: 'services', href: '#services' },
+  { label: 'portfolio', href: '#works' },
+  { label: 'reviews', href: '#reviews' },
+];
+const social = [
+  { label: 'RabbitTask', href: 'https://www.rabbittask.com', icon: rabbit },
+  { label: 'Facebook', href: 'https://www.facebook.com', icon: facebook },
+  { label: 'Instagram', href: 'https://www.instagram.com', icon: instagram },
+];
+---
+<footer class="footer">
+  <div class="footer__box">
+    <a class="footer__logo" href="#top" aria-label="BFIX Service — back to top" set:html={logo} />
+
+    <nav class="footer__nav" aria-label="Footer">
+      {pages.map((l) => <a class="t-label link" href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <ul class="footer__social">
+      {social.map((s) => (
+        <li>
+          <a class="social" href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+            <svg class="social__shape" viewBox="0 0 56 56" width="56" height="56" aria-hidden="true"><path d="M0 15.2233V56H40.9231L56 41.3204V0H15.6353L0 15.2233Z" /></svg>
+            <span class="social__icon" set:html={s.icon} />
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <p class="footer__brand" data-footer-logo data-fit-text>BFIX SERVICE</p>
+    <p class="footer__tagline">Professional repair and handyman services in Florida</p>
+    <p class="footer__muted footer__cities">Hollywood • Fort Lauderdale • Miami • Boca Raton • Pompano Beach</p>
+    <p class="footer__muted footer__copy">© 2025 BFIX Service. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--n-800);
+    color: var(--white);
+    overflow: hidden;
+  }
+  /* 1020px block centred on the page, positions taken from the layout (footer top = 0) */
+  .footer__box {
+    position: relative;
+    width: 1020px;
+    height: 479px;
+    margin: 0 auto;
+  }
+  .footer__logo {
+    position: absolute;
+    left: 14px;
+    top: 96px;
+    width: 185px;
+    height: 81px;
+    transition: opacity .2s;
+  }
+  .footer__logo:hover { opacity: .8; }
+  .footer__logo :global(svg) { width: 185px; height: 81px; }
+
+  .footer__nav {
+    position: absolute;
+    left: 315px;
+    top: 128px;
+    display: flex;
+    gap: 36px;
+  }
+  .footer__nav a { color: var(--white); }
+  .footer__nav a:hover { color: var(--brand-orange-light); }
+
+  .footer__social {
+    position: absolute;
+    right: 10px;
+    top: 108px;
+    display: flex;
+    gap: 8px;
+  }
+  .social {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    color: var(--white);
+    transition: transform .3s var(--ease-out), filter .3s;
+  }
+  .social__shape { position: absolute; inset: 0; fill: var(--brand-orange); transition: fill .2s; }
+  .social__icon { position: relative; display: grid; }
+  .social__icon :global(svg) { width: 25px; height: auto; max-height: 25px; }
+  .social:hover { transform: translateY(-3px); filter: drop-shadow(0 4px 12px rgba(222, 82, 34, .45)); }
+  .social:hover .social__shape { fill: var(--brand-orange-light); }
+
+  .footer__brand {
+    position: absolute;
+    left: 0;
+    top: 186px;
+    width: 1020px;
+    font-size: 173.28px;
+    line-height: .8;
+    letter-spacing: -0.0735em;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--n-100);
+    transform-origin: 0 0;
+  }
+  .footer__tagline {
+    position: absolute;
+    left: 14px;
+    top: 329px;
+    width: 998px;
+    font-size: 15px;
+    line-height: 1.3;
+    letter-spacing: 10.4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--n-100);
+  }
+  .footer__muted { position: absolute; top: 358px; font-size: 14px; line-height: 1.4; color: var(--n-600); }
+  .footer__cities { left: 12px; }
+  .footer__copy { right: 8px; top: 363px; }
+
+  /* ---------- phones: stacked footer, brand line spans the screen ---------- */
+  @media (max-width: 767px) {
+    .footer__box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      width: 100%;
+      height: auto;
+      padding: 48px var(--gutter) calc(40px + env(safe-area-inset-bottom));
+      row-gap: 28px;
+    }
+    .footer__box > * { position: static; }
+    .footer__logo { width: 120px; height: 53px; }
+    .footer__logo :global(svg) { width: 120px; height: 53px; }
+    .footer__social { grid-column: 2; grid-row: 1; justify-self: end; }
+    .social { width: 48px; height: 48px; }
+    .social__shape { width: 48px; height: 48px; }
+    .social__icon :global(svg) { width: 21px; max-height: 21px; }
+    .footer__nav {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 16px;
+    }
+    .footer__nav a { padding: 10px 0; }
+    .footer__brand { grid-column: 1 / -1; width: 100%; margin-top: 4px; }
+    .footer__tagline {
+      grid-column: 1 / -1;
+      width: auto;
+      margin-top: -16px;
+      font-size: 11px;
+      letter-spacing: .32em;
+      line-height: 1.6;
+      white-space: normal;
+    }
+    .footer__muted { grid-column: 1 / -1; font-size: 13px; }
+    .footer__copy { margin-top: -16px; }
+  }
+</style>
+
+<script>
+  // make "BFIX SERVICE" span the exact width of the block, whatever the font rendering
+  const fitBrand = () => {
+    document.querySelectorAll<HTMLElement>('[data-fit-text]').forEach((el) => {
+      el.style.fontSize = '';
+      const target = el.clientWidth;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const w = range.getBoundingClientRect().width;
+      if (w > 0) el.style.fontSize = `${(parseFloat(getComputedStyle(el).fontSize) * target) / w}px`;
+    });
+  };
+  document.fonts?.ready.then(fitBrand);
+  window.addEventListener('resize', fitBrand);
+</script>

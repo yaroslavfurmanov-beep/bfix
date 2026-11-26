@@ -1,0 +1,87 @@
+---
+import { asset } from '../lib/asset';
+import IconTile from './IconTile.astro';
+import feat1 from '../icons/feat1.svg?raw';
+import feat2 from '../icons/feat2.svg?raw';
+import feat3 from '../icons/feat3.svg?raw';
+
+const features = [
+  { icon: feat1, title: 'You deal with one person', text: "No call center and no crew you've never met. The person who quotes the job is the person who does it" },
+  { icon: feat2, title: '122 completed projects', text: 'From condominiums to private homes, we always adhere to deadlines and agreements' },
+  { icon: feat3, title: 'Photo and video reports after each stage', text: 'Full transparency. You see the entire process even if you are hundreds of miles away.' },
+];
+---
+<section class="why screen" id="about">
+  <div class="wrap why__inner" data-fit>
+    <img class="why__img" src={asset("/img/tools.webp")} alt="Handyman tools laid out on a workbench" width="843" height="584" loading="lazy" data-reveal="left" />
+    <div class="why__content">
+      <h2 class="t-h1" data-reveal>Why choose<br /><b class="w7">me?</b></h2>
+      <ul class="why__grid">
+        {features.map((f) => (
+          <li class="feature" data-reveal>
+            <IconTile icon={f.icon} />
+            <h3 class="t-h3 feature__title">{f.title}</h3>
+            <p class="t-body feature__text">{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why__inner { min-height: 584px; }
+  .why__img {
+    position: absolute;
+    left: -188px;
+    top: 0;
+    width: 843px;
+    height: 584px;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .why__content {
+    position: relative;
+    margin-left: 608px;
+    padding-top: 20px;
+  }
+  .why__grid {
+    display: grid;
+    grid-template-columns: 304px 288px;
+    row-gap: 40px;
+    margin-top: 40px;
+  }
+  .feature__title { margin-top: 16px; }
+  .feature__text { margin-top: 8px; max-width: 242px; }
+  .feature:last-child { grid-column: 1 / -1; }
+  .feature:last-child .feature__text { max-width: 288px; }
+
+  /* ---------- phones: title → photo → features, one column ---------- */
+  @media (max-width: 767px) {
+    .why__inner { display: flex; flex-direction: column; min-height: 0; }
+    .why__content { display: contents; }
+    .why__content > h2 { order: 1; }
+    .why__img {
+      order: 2;
+      position: relative;
+      left: auto;
+      top: auto;
+      width: calc(100% + var(--gutter));
+      height: auto;
+      aspect-ratio: 843 / 584;
+      margin: 24px 0 0 calc(-1 * var(--gutter));
+      object-fit: contain;
+      object-position: left center;
+    }
+    .why__grid { order: 3; grid-template-columns: 1fr; row-gap: 28px; margin-top: 32px; }
+    .feature, .feature:last-child {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      column-gap: 16px;
+      grid-column: auto;
+    }
+    .feature :global([data-tile]) { grid-row: span 2; }
+    .feature__title { margin-top: 2px; }
+    .feature__text, .feature:last-child .feature__text { max-width: none; }
+  }
+</style>

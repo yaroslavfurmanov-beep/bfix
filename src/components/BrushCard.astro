@@ -1,0 +1,40 @@
+---
+/** 592×592 chamfered accent card with brush strokes (UI-kit "Card") */
+import orange from '../icons/card-orange.svg?raw';
+import green from '../icons/card-green.svg?raw';
+interface Props { color?: 'orange' | 'green'; class?: string }
+const { color = 'orange', class: cls = '' } = Astro.props;
+---
+<div class={`bcard bcard--${color} ${cls}`}>
+  <div class="bcard__bg" set:html={color === 'green' ? green : orange} />
+  <slot />
+</div>
+
+<style>
+  .bcard {
+    position: relative;
+    width: 592px;
+    height: 592px;
+  }
+  .bcard__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .bcard__bg :global(svg) { position: absolute; }
+  /* exported SVGs carry their own offsets (brush overflow / baked shadow) */
+  .bcard--orange .bcard__bg { filter: drop-shadow(0 4px 12px rgba(222, 82, 34, .45)); }
+  .bcard--orange .bcard__bg :global(svg) { left: -37px; top: -40px; width: 666px; height: 672px; }
+  .bcard--green .bcard__bg :global(svg) { left: -52.7px; top: -48.7px; width: 698px; height: 669px; }
+
+  /* ---------- phones: the card follows the screen width, contents scale with it (cqi = % of card width) ---------- */
+  @media (max-width: 767px) {
+    .bcard {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      container-type: inline-size;
+    }
+    .bcard--orange .bcard__bg :global(svg) { left: -6.25%; top: -6.76%; width: 112.5%; height: 113.51%; }
+    .bcard--green .bcard__bg :global(svg) { left: -8.9%; top: -8.23%; width: 117.9%; height: 113.01%; }
+  }
+</style>

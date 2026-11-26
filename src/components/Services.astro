@@ -138,18 +138,12 @@ import { services } from '../data/content';
     .services__aside { position: static; transform: none; max-width: 520px; margin: 0 auto; }
     .services__heading { left: 9.3%; top: 9.5%; font-size: 15.2cqi; letter-spacing: -0.065em; }
     .services__heading b { max-width: 68cqi; }
-    .services__tool { display: none; }
-    /* without the photo the card can be shorter than a square */
-    .services__aside :global(.bcard) {
-      aspect-ratio: 1 / .72;
-      clip-path: polygon(0 7.65cqi, 8.2cqi 0, 100% 0, 100% calc(100% - 7.4cqi), calc(100% - 8cqi) 100%, 0 100%);
-    }
-    .services__aside :global(.bcard--orange .bcard__bg svg) { height: auto; }
+    .services__tool { left: -8%; top: 31%; width: 100%; height: auto; }
     .services__note {
       left: auto;
       right: 8.5%;
       top: auto;
-      bottom: 11%;
+      bottom: 8%;
       width: 50%;
       font-size: max(15px, 4.4cqi);
     }

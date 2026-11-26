@@ -231,15 +231,15 @@ const floaters = [
     .form__foot { margin-top: 20px; }
     .form__foot :global(.btn) { width: 100%; }
 
-    .direct { padding: 170px 0 180px; }
+    .direct { padding: 64px 0 24px; }
     .direct h2 { font-size: min(var(--m-h1), 10.4vw); }
     .direct__big { font-size: clamp(21px, 6.9vw, 34px); letter-spacing: -0.05em; text-decoration-thickness: 2px; text-underline-offset: 5px; }
     .direct__inner > .direct__big:first-of-type { margin-top: 28px; }
     .direct__phone { margin-top: 14px; }
     .direct__msgr { gap: 8px 24px; flex-wrap: wrap; justify-content: center; margin-top: 20px; font-size: 15px; }
     .direct__msgr a { display: inline-block; padding: 10px 0; }
-    .floater--1 { left: -4% !important; top: auto !important; bottom: -175px; width: min(42%, 210px) !important; }
-    .floater--2 { left: auto !important; right: -2%; top: -175px !important; width: min(30%, 150px) !important; }
+    /* tool photos are hidden on phones, the block stays compact */
+    .floater { display: none; }
   }
 </style>
 
